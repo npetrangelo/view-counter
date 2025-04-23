@@ -1,0 +1,25 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "A toy project to teach myself how to write a stateless microservice using Redis and Postgres for state management.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npetrangelo/view-counter.git"
+  },
+  "type": "module",
+  "author": "Nathan Petrangelo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/npetrangelo/view-counter/issues"
+  },
+  "homepage": "https://github.com/npetrangelo/view-counter#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.15.1",
+    "redis": "^4.7.0"
+  }
+}
