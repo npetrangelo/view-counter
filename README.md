@@ -1,7 +1,9 @@
 This is a toy project to explore writing a stateless microservice with the Redis cache and a Database.
 
-The code here should be easily transferrable to a serverless function, albeit with some configuration changes to connect to the right cache and DB.
+The behavior I'm trying for is basically a buffer in front of the DB processing requests into the cache and only
+updating the DB on every nth request.
 
+The code here should be easily transferrable to a serverless function, albeit with some configuration changes to connect to the right cache and DB.
 
 To run this code,
 1. [Install Node](https://nodejs.org/en/download)
