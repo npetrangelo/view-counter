@@ -19,8 +19,8 @@ await db.query(`CREATE TABLE views (
 );`);
 
 const createView = (id) => db.query(`INSERT INTO views (id, count) VALUES ('${id}', 1)`);
-const updateView = (id, count) => db.query(`UPDATE views SET count = ${count} WHERE id = ${id}`);
-const selectView = (id) => db.query(`SELECT count FROM views WHERE id = ${id}`);
+const updateView = (id, count) => db.query(`UPDATE views SET count = ${count} WHERE id = '${id}'`);
+const selectView = (id) => db.query(`SELECT count FROM views WHERE id = '${id}'`);
 
 const cache = await redis.createClient()
   .on('error', err => console.log('Redis Client Error', err))
@@ -32,7 +32,7 @@ app.get('/', async (req, res) => {
 
 app.get('/views/:id', async (req, res) => {
     const { id } = req.params;
-    const views = selectView(id);
+    const views = await selectView(id);
     res.send(views);
 });
 
