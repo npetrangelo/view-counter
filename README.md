@@ -1,9 +1,11 @@
-This is a toy project to explore writing a stateless microservice with the Redis cache and a Database.
+This is a toy project to explore writing a stateless microservice with Redis and Postgres. It aggregates views in the cache before updating the DB on every nth request, where n is exposed as parameter called `batchSize` at the top of the file.
 
-The behavior I'm trying for is basically a buffer in front of the DB processing requests into the cache and only
-updating the DB on every nth request.
+The code here should be easily transferrable to a serverless function, with the cache and DB functions modified for the appropriate services.
 
-The code here should be easily transferrable to a serverless function, albeit with some configuration changes to connect to the right cache and DB.
+The views API lives at `/views/:id`.
+To start, a POST creates a record in the views API.
+Subsequent PUSH requests increment the view count in the cache, and also the DB every n requests.
+You can use GET to see what the current view count is.
 
 To run this code,
 1. [Install Node](https://nodejs.org/en/download)
