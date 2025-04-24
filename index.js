@@ -1,6 +1,6 @@
 import express from 'express';
 import redis from 'redis';
-import pg from 'pg'
+import pg from 'pg';
 
 const refreshRate = 10;
 
@@ -11,7 +11,7 @@ const { Client } = pg;
 const db = new Client();
 await db.connect();
 
-await db.query(`DROP TABLE IF EXISTS views`)
+await db.query(`DROP TABLE IF EXISTS views`);
 
 await db.query(
 `CREATE TABLE views (
@@ -26,12 +26,12 @@ const selectView = (id) => db.query(`SELECT count FROM views WHERE id = '${id}'`
 const cacheReset = async (id) => {
     await cache.set(`refresh-${id}`, refreshRate);
     await cache.set(id, 0);
-}
+};
 
 const cachePush = async (id) => {
     await cache.decr(`refresh-${id}`);
     await cache.incr(id);
-}
+};
 
 const cache = await redis.createClient()
   .on('error', err => console.log('Redis Client Error', err))
