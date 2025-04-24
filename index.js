@@ -19,7 +19,7 @@ await db.query(`CREATE TABLE views (
 );`);
 
 const createView = (id) => db.query(`INSERT INTO views (id, count) VALUES ('${id}', 1)`);
-const updateView = (id, count) => db.query(`UPDATE views SET count = ${count} WHERE id = '${id}'`);
+const updateView = (id, count) => db.query(`UPDATE views SET count = count + ${count} WHERE id = '${id}'`);
 const selectView = (id) => db.query(`SELECT count FROM views WHERE id = '${id}'`);
 
 const cache = await redis.createClient()
@@ -38,6 +38,8 @@ app.get('/views/:id', async (req, res) => {
 
 app.post('/views/:id', async (req, res) => {
     const { id } = req.params;
+    await cache.set(`refresh-${id}`, refreshRate);
+    await cache.set(id, 0);
     const views = await createView(id);
     res.send(views);
 });
@@ -46,14 +48,16 @@ app.put('/views/:id', async (req, res) => {
     const { id } = req.params;
     const refresh = await cache.get(`refresh-${id}`);
     if (refresh <= 0) {
-        const views = await cache.get(id);
-        await cache.set('refresh', refreshRate);
+        const views = Number(await cache.get(id));
+        await cache.set(`refresh-${id}`, refreshRate);
+        await cache.set(id, 0);
         await updateView(id, views);
+        res.send('Updated Database');
     } else {
-        await cache.decr('refresh');
+        await cache.decr(`refresh-${id}`);
         await cache.incr(id);
+        res.send('Cached update');
     }
-    console.log('Incremented view');
 });
 
 app.listen(port, () => {
