@@ -1,4 +1,4 @@
-This is a toy project to explore writing a stateless microservice with Redis and Postgres. It aggregates views in the cache before updating the DB on every nth request, where n is exposed as parameter called `batchSize` at the top of the file.
+This is a toy project to explore writing a stateless microservice with Redis and Postgres. It aggregates views in the cache before updating the DB on every nth request, where n is exposed as parameter called `batchSize` in the `cacheReset()` function.
 
 The code here should be easily transferrable to a serverless function, with the cache and DB functions modified for the appropriate services.
 

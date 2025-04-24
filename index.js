@@ -2,8 +2,6 @@ import express from 'express';
 import redis from 'redis';
 import pg from 'pg';
 
-const batchSize = 10;
-
 const app = express();
 const port = 3000;
 
@@ -24,6 +22,7 @@ const updateView = (id, count) => db.query(`UPDATE views SET count = count + ${c
 const selectView = (id) => db.query(`SELECT count FROM views WHERE id = '${id}'`);
 
 const cacheReset = async (id) => {
+    const batchSize = 10;
     await cache.set(`refresh-${id}`, batchSize);
     await cache.set(id, 0);
 };
